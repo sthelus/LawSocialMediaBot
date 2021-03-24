@@ -59,7 +59,7 @@ public class Reposter {
     public static void main(String[] args){
         ChromeOptions options = new ChromeOptions();
 
-        System.setProperty("webdriver.chrome.driver", "agent//chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver_win32/chromedriver.exe");
         options.setHeadless(true);
 
         if(System.getProperty("os.name").contains("Linux")) {
