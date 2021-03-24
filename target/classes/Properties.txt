@@ -1,2 +1,2 @@
-lawuser=winner3
-lawpass=Smashball3!
+lawuser=testacc
+lawpass=abc123
