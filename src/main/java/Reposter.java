@@ -1,0 +1,94 @@
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+
+public class Reposter {
+
+    static void sendMessage(TextChannel ch, String message)
+    {
+        ch.sendMessage(message).queue();
+    }
+
+    public List<String> postLinks;
+    public List<TextChannel> channels;
+
+    public void getTwitterPosts(WebDriver webDriver, PostFetcher postFetcher, LoginToLAW loginToLAW){
+        webDriver.get("http://www.law-rp.com");
+        WebDriverWait wait = new WebDriverWait(webDriver, 5);
+        wait.until(elementToBeClickable(By.linkText("Quick links")));
+        if(!webDriver.findElements(By.linkText("Login")).isEmpty()){
+            loginToLAW.login(webDriver);
+        }
+
+        postLinks = postFetcher.getUnreadPosts(webDriver);
+
+        if(postLinks!= null){
+            sendToChannel(channels, postLinks);
+        }
+
+        System.out.println("FINISHED ONE RUN");
+    }
+
+    public void sendToChannel(List<TextChannel> textChannels, List<String> postLinks){
+        for(TextChannel ch : textChannels) {
+            if(postLinks == null){
+                assert true;
+            }
+            else {
+                for (String post : postLinks) {
+                    sendMessage(ch, post);
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args){
+        ChromeOptions options = new ChromeOptions();
+
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Sid\\Documents\\LawSocialMedia\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe");
+        options.setHeadless(false);
+        WebDriver driver = new ChromeDriver(options);
+
+        PostFetcher postFetcher = new PostFetcher();
+        LoginToLAW loginToLAW = new LoginToLAW();
+        Reposter reposter = new Reposter();
+
+        JDABuilder jdaBuilder = JDABuilder.createDefault("ODI0MDM1NzgzNTUxMDkwNzc4.YFphIA.NLdn8eEl4T4cYMPvxORJV6fyr1s");
+        JDA jda;
+
+        Timer myTimer = new Timer ();
+        TimerTask myTask = new TimerTask () {
+            @Override
+            public void run () {
+                System.out.println("SEEKING POSTS!!!!");
+                reposter.getTwitterPosts(driver, postFetcher, loginToLAW);
+            }
+        };
+
+        try{
+            jda = jdaBuilder.build();
+            jda.awaitReady();
+            System.out.println("Bot is up and running! Online!");
+            reposter.channels = jda.getTextChannelsByName("general", true);
+            myTimer.scheduleAtFixedRate(myTask , 0l, 2 * (60*1000));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+}

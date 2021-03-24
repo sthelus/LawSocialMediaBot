@@ -1,0 +1,2 @@
+lawuser=winner3
+lawpass=Smashball3!
