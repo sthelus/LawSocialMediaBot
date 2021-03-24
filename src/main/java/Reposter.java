@@ -60,7 +60,7 @@ public class Reposter {
         ChromeOptions options = new ChromeOptions();
 
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\Sid\\Documents\\LawSocialMedia\\src\\main\\resources\\chromedriver_win32\\chromedriver.exe");
-        options.setHeadless(false);
+        options.setHeadless(true);
         WebDriver driver = new ChromeDriver(options);
 
         PostFetcher postFetcher = new PostFetcher();
