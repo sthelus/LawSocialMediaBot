@@ -3,6 +3,7 @@ package com.lawbot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -58,8 +59,21 @@ public class Reposter {
     public static void main(String[] args){
         ChromeOptions options = new ChromeOptions();
 
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver_win32/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "agent//chromedriver.exe");
         options.setHeadless(true);
+
+        if(System.getProperty("os.name").contains("Linux")) {
+            try {   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
+                String binaryPath = EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM");
+                System.out.println("Path: " + binaryPath);
+                options.setBinary(binaryPath);
+                options.addArguments("--disable-gpu");
+                options.addArguments("--no-sandbox");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         WebDriver driver = new ChromeDriver(options);
 
         PostFetcher postFetcher = new PostFetcher();
