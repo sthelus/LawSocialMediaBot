@@ -59,11 +59,10 @@ public class Reposter {
     public static void main(String[] args){
         ChromeOptions options = new ChromeOptions();
 
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver_win32/chromedriver.exe");
-        options.setHeadless(true);
-
         if(System.getProperty("os.name").contains("Linux")) {
             try {   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
+                //System.setProperty("webdriver.chrome.driver", EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM"));
+                options.setHeadless(true);
                 String binaryPath = "/app/.apt/usr/bin/google-chrome";
                 System.out.println("Path: " + binaryPath);
                 options.setBinary(binaryPath);
