@@ -64,7 +64,7 @@ public class Reposter {
 
         if(System.getProperty("os.name").contains("Linux")) {
             try {   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
-                String binaryPath = EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM");
+                String binaryPath = "/app/.apt/usr/bin/google-chrome";
                 System.out.println("Path: " + binaryPath);
                 options.setBinary(binaryPath);
                 options.addArguments("--disable-gpu");
