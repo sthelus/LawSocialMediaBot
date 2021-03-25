@@ -62,8 +62,8 @@ public class Reposter {
         if(System.getProperty("os.name").contains("Linux")) {
             try {   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
                 //System.setProperty("webdriver.chrome.driver", EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM"));
-                String host = "0.0.0.0";
-                int port = System.getenv("PORT");
+//                String host = "0.0.0.0";
+//                int port = System.getenv("PORT");
 
                 options.setHeadless(true);
                 String binaryPath = "/app/.apt/usr/bin/google-chrome";
