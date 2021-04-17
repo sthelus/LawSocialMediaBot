@@ -35,7 +35,6 @@ public class PostFetcher {
                     for(WebElement imageLink: content.findElements(By.className("postimage"))){
                         postsAsImageLinks.add(imageLink.getAttribute("src"));
                     }
-                    //postsAsImageLinks.add(post.findElement(By.className("postimage")).getAttribute("src"));
                 }
                 catch (Exception e){
                     e.printStackTrace();
