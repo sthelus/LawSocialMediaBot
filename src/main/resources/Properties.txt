@@ -1,2 +1,2 @@
-lawuser=testacc
+lawuser=testacc2
 lawpass=abc123

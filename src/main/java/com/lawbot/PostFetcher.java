@@ -30,7 +30,16 @@ public class PostFetcher {
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             List<WebElement> postsAsWebElements = driver.findElements(By.cssSelector("div[class*=unread]"));
             for(WebElement post : postsAsWebElements){
-                    postsAsImageLinks.add(post.findElement(By.className("postimage")).getAttribute("src"));
+                try {
+                    WebElement content = post.findElement(By.className("content"));
+                    for(WebElement imageLink: content.findElements(By.className("postimage"))){
+                        postsAsImageLinks.add(imageLink.getAttribute("src"));
+                    }
+                    //postsAsImageLinks.add(post.findElement(By.className("postimage")).getAttribute("src"));
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
         return postsAsImageLinks;

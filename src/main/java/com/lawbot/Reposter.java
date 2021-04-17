@@ -3,13 +3,13 @@ package com.lawbot;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import javax.security.auth.login.LoginException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,7 +28,7 @@ public class Reposter {
 
     public void getTwitterPosts(WebDriver webDriver, PostFetcher postFetcher, LoginToLAW loginToLAW){
         webDriver.get("http://www.law-rp.com");
-        WebDriverWait wait = new WebDriverWait(webDriver, 5);
+        WebDriverWait wait = new WebDriverWait(webDriver, 10);
         wait.until(elementToBeClickable(By.linkText("Quick links")));
         if(!webDriver.findElements(By.linkText("Login")).isEmpty()){
             loginToLAW.login(webDriver);
@@ -56,26 +56,11 @@ public class Reposter {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws LoginException, InterruptedException {
         ChromeOptions options = new ChromeOptions();
 
-        if(System.getProperty("os.name").contains("Linux")) {
-            try {   //GOOGLE_CHROME_SHIM GOOGLE_CHROME_BIN
-                //System.setProperty("webdriver.chrome.driver", EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM"));
-//                String host = "0.0.0.0";
-//                int port = System.getenv("PORT");
-
-                options.setHeadless(true);
-                String binaryPath = "/app/.apt/usr/bin/google-chrome";
-                System.out.println("Path: " + binaryPath);
-                options.setBinary(binaryPath);
-                options.addArguments("--disable-gpu");
-                options.addArguments("--no-sandbox");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
+        System.setProperty("webdriver.chrome.driver", "src\\main\\resources\\chromedriver_win32\\chromedriver.exe");
+        options.setHeadless(false);
         WebDriver driver = new ChromeDriver(options);
 
         PostFetcher postFetcher = new PostFetcher();
@@ -98,11 +83,16 @@ public class Reposter {
             jda = jdaBuilder.build();
             jda.awaitReady();
             System.out.println("Bot is up and running! Online!");
-            reposter.channels = jda.getTextChannelsByName("general", true);
-            myTimer.scheduleAtFixedRate(myTask , 0l, 2 * (60*1000));
+            reposter.channels = jda.getTextChannelsByName("law-social-media", true);
+            myTimer.scheduleAtFixedRate(myTask , 0L, 2 * (60*1000));//every 2 mins
         }
         catch (Exception e){
             e.printStackTrace();
+            jda = jdaBuilder.build();
+            jda.awaitReady();
+            System.out.println("Bot is up and running! Online!");
+            reposter.channels = jda.getTextChannelsByName("law-social-media", true);
+            myTimer.scheduleAtFixedRate(myTask , 0L, 2 * (60*1000));//every 2 mins
         }
 
     }
