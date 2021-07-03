@@ -1,9 +1,11 @@
 package com.lawbot;
 
+import org.apache.commons.validator.routines.UrlValidator;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -12,6 +14,7 @@ public class PostFetcher {
 
     public List<String> getUnreadPosts(WebDriver driver) {
         System.out.println("PUREEEEEESE");
+        String[] schemes = {"http","https"}; // DEFAULT schemes = "http", "https", "ftp"
 
 
         List<String> notifications = new ArrayList<>();
@@ -41,6 +44,10 @@ public class PostFetcher {
                 }
             }
         }
+
+        UrlValidator urlValidator = new UrlValidator(schemes);
+
+        postsAsImageLinks.removeIf(link -> !urlValidator.isValid(link));
         return postsAsImageLinks;
     }
 }

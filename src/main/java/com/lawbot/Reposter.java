@@ -4,9 +4,11 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import javax.security.auth.login.LoginException;
@@ -29,7 +31,16 @@ public class Reposter {
     public void getTwitterPosts(WebDriver webDriver, PostFetcher postFetcher, LoginToLAW loginToLAW){
         webDriver.get("http://www.law-rp.com");
         WebDriverWait wait = new WebDriverWait(webDriver, 10);
-        wait.until(elementToBeClickable(By.linkText("Quick links")));
+        boolean success = false;
+        while (!success) {
+            try {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Quick links")));
+                success = true;
+            } catch (TimeoutException tme) {
+                tme.printStackTrace();
+                webDriver.get(webDriver.getCurrentUrl());
+            }
+        }
         if(!webDriver.findElements(By.linkText("Login")).isEmpty()){
             loginToLAW.login(webDriver);
         }
