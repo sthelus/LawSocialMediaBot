@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 public class Reposter {
 
     static void sendMessage(TextChannel ch, String message)

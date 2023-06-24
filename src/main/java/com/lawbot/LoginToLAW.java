@@ -25,8 +25,8 @@ public class LoginToLAW {
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         Properties properties = new Properties();
-
-        try (InputStream inputStream = Files.newInputStream(Paths.get("src/main/resources/Properties.txt"))) {
+        
+        try (InputStream inputStream = new FileInputStream("src/main/resources/Properties.txt")) {
 
             properties.load(inputStream);
             WebElement username = webDriver.findElement(By.name("username"));

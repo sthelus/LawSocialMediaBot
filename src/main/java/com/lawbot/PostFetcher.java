@@ -95,6 +95,7 @@ public class PostFetcher {
                 postsAsImageLinks.remove(link);
             }
         }
+
         return postsAsImageLinks;
     }
 }
