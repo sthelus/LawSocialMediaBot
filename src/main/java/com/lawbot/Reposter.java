@@ -15,8 +15,6 @@ import javax.security.auth.login.LoginException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 public class Reposter {
 
     static void sendMessage(TextChannel ch, String message)
@@ -76,7 +74,8 @@ public class Reposter {
         LoginToLAW loginToLAW = new LoginToLAW();
         Reposter reposter = new Reposter();
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault("ODI0MDM1NzgzNTUxMDkwNzc4.YFphIA.NLdn8eEl4T4cYMPvxORJV6fyr1s");
+        JDABuilder jdaBuilder = JDABuilder.createDefault("");//TODO: You must paste the sercurity token here
+        // TODO: The token should not be publicly exposed. I've shared it with you in our discord server. Please do not share the security token with others
         JDA jda;
 
         Timer myTimer = new Timer ();
