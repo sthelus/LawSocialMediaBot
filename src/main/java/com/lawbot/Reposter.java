@@ -74,7 +74,7 @@ public class Reposter {
         LoginToLAW loginToLAW = new LoginToLAW();
         Reposter reposter = new Reposter();
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault("");//TODO: You must paste the security token here
+        JDABuilder jdaBuilder = JDABuilder.createDefault("ODI0MDM1NzgzNTUxMDkwNzc4.G-8nfN.wwKVupwBb6eawlomgjQYQdkVd9F0v6bgTMFJjU");//TODO: You must paste the security token here
         // TODO: The token should not be publicly exposed. I've shared it with you in our discord server. Please do not share the security token with others
         JDA jda;
 

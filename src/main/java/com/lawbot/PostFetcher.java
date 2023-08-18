@@ -65,8 +65,24 @@ public class PostFetcher {
                 for (WebElement post : postsAsWebElements) {
                     try {
                         WebElement content = post.findElement(By.className("content"));
+                        WebElement spoilerTab = null;
+                        if(!content.findElements(By.className("spoiler-body")).isEmpty()){
+                            spoilerTab = content.findElement(By.className("spoiler-body"));
+                        }
+
+                        List<WebElement> imagesInsideSpoiler = null;
+                        if(spoilerTab != null){
+                            imagesInsideSpoiler = spoilerTab.findElements(By.className("postimage"));
+                        }
                         for (WebElement imageLink : content.findElements(By.className("postimage"))) {
-                            postsAsImageLinks.add(imageLink.getAttribute("src"));
+                            if (imagesInsideSpoiler != null) {
+                                if (!imagesInsideSpoiler.contains(imageLink)) {
+                                    postsAsImageLinks.add(imageLink.getAttribute("src"));
+                                }
+                            }
+                            else{
+                                postsAsImageLinks.add(imageLink.getAttribute("src"));
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
